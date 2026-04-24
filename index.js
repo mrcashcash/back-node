@@ -1,6 +1,4 @@
 require('dotenv').config();
-const { version: APP_VERSION } = require('./package.json');
-
 const express = require('express');
 const { Client } = require('pg');
 
