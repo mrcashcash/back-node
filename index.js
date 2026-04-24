@@ -1,4 +1,13 @@
 require('dotenv').config();
+const { version: APP_VERSION } = require('./package.json');
+
+const BUILD_INFO = {
+    version: APP_VERSION,
+    commit: process.env.GIT_COMMIT || 'unknown',
+    build_time: process.env.BUILD_TIME || 'unknown',
+    node: process.version,
+    environment: process.env.NODE_ENV || 'development',
+};
 const express = require('express');
 const { Client } = require('pg');
 
@@ -44,6 +53,11 @@ async function buildHealthStatus() {
 // not fail liveness — that's what /ready is for.
 app.get('/health', async (_req, res) => {
     res.status(200).json(await buildHealthStatus());
+});
+
+// Version: static build metadata. Safe to cache; does not touch the DB.
+app.get('/version', (_req, res) => {
+    res.status(200).json(BUILD_INFO);
 });
 
 // Readiness: 200 only when the DB is reachable, 503 otherwise. This is the
