@@ -48,7 +48,7 @@ app.get('/health', async (_req, res) => {
 
 // Version: static build metadata. Safe to cache; does not touch the DB.
 app.get('/version', (_req, res) => {
-    res.status(200).json({Version: 'V2'});
+    res.status(200).json({Version: 'V3'});
 });
 
 // Readiness: 200 only when the DB is reachable, 503 otherwise. This is the
